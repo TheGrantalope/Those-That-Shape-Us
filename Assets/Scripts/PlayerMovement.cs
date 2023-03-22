@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -18,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MovePlayer();
 
-        if (Input.GetButton("Jump") && IsGrounded())
+        if (Input.GetButton("Jump")) //&& IsGrounded())
             Jump();
     }
     private void MovePlayer()
@@ -28,11 +30,11 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump() => _playerRigidbody.velocity = new Vector2(0, jumpPower);
 
-    private bool IsGrounded()
+  /*  private bool IsGrounded()
     {
         var groundCheck = Physics2D.Raycast(transform.position, Vector2.down, 0.7f);
         return groundCheck.collider != null && groundCheck.collider.CompareTag("Ground");
     }
 
-
+*/
 }
