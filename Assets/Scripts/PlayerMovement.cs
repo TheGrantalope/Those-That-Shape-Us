@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5.0f;
     [SerializeField] private float jumpPower = 5.0f;
+    public bool isGrounded;
 
     private Rigidbody2D _playerRigidbody;
     private void Start()
@@ -20,21 +21,28 @@ public class PlayerMovement : MonoBehaviour
     {
         MovePlayer();
 
-        if (Input.GetButton("Jump")) //&& IsGrounded())
+        if (Input.GetButton("Jump") && isGrounded)
             Jump();
     }
+
     private void MovePlayer()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         _playerRigidbody.velocity = new Vector2(horizontalInput * playerSpeed, _playerRigidbody.velocity.y);
     }
-    private void Jump() => _playerRigidbody.velocity = new Vector2(0, jumpPower);
 
-  /*  private bool IsGrounded()
+    private void Jump()
     {
-        var groundCheck = Physics2D.Raycast(transform.position, Vector2.down, 0.7f);
-        return groundCheck.collider != null && groundCheck.collider.CompareTag("Ground");
+        _playerRigidbody.velocity = new Vector2(0, jumpPower);
+        isGrounded = false;
     }
 
-*/
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
 }
