@@ -21,7 +21,7 @@ public class MusicController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // IdleMusic is called in InvokeRepeating 
@@ -29,6 +29,11 @@ public class MusicController : MonoBehaviour
     {
         delay = Random.Range(delayRange[0], delayRange[1]);
         music.PlayDelayed(delay);
+    }
+
+    void BattleMusic()
+    {
+
     }
 
 }

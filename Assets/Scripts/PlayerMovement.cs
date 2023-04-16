@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5.0f;
     [SerializeField] private float jumpPower = 5.0f;
-    public bool isGrounded;
+    private bool isGrounded;
 
     private Rigidbody2D _playerRigidbody;
     private void Start()
