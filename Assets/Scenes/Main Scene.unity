@@ -245,7 +245,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &641729932
 MonoBehaviour:
@@ -261,7 +261,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   jumpPower: 5
-  isGrounded: 0
 --- !u!1 &687027997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1079,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 78767730b8c6f3c46ad2e8d2b6a401ae, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1178,6 +1177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6b845e88e63914380e5c3c28588b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleMusic:
+  - {fileID: 8300000, guid: c57f35fcda3f9ee48ad8797883e7cbdc, type: 3}
+  - {fileID: 8300000, guid: 7a8541e24a3276c4385707569d788f08, type: 3}
+  battleMusic:
+  - {fileID: 8300000, guid: b649a50a0550de3449326a020727a8c2, type: 3}
+  player: {fileID: 641729927}
+  slime: {fileID: 1629880897453318324, guid: ca5705f97ed38440e97ecb846c9538e4, type: 3}
 --- !u!1 &1193193258
 GameObject:
   m_ObjectHideFlags: 0
@@ -4145,7 +4151,7 @@ Transform:
   - {fileID: 687027998}
   - {fileID: 1193193259}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1564233531
 GameObject:
@@ -5012,7 +5018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2975928278282772644, guid: 9aa2268c662ea77489a2d62cf5b0bfe3, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2975928278282772644, guid: 9aa2268c662ea77489a2d62cf5b0bfe3, type: 3}
       propertyPath: m_LocalScale.x
