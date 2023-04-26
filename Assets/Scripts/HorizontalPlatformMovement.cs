@@ -37,8 +37,7 @@ public class HorizontalPlatformMovement : MonoBehaviour
         {
             transform.Translate(Vector3.right * Time.deltaTime * -speed);
         }
-        if (touchPlayer == true)
-            change = true;
+        
     }
 
     bool Switch(bool change)
@@ -55,11 +54,11 @@ public class HorizontalPlatformMovement : MonoBehaviour
         return change;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+   /* void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             touchPlayer = true;
         }
-    }
+    }*/
 }

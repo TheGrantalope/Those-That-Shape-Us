@@ -20,10 +20,9 @@ public class PlayerMovement : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Sprite sprite1;
     public Sprite sprite2;
-    public Sprite sprite3;
 
-    [SerializeField] private float fallGravityScale = 3;
-    [SerializeField] private float gravityScale = 3;
+    private float fallGravityScale = 3;
+    private float gravityScale = 3;
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -129,13 +128,25 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Damaging"))
         {
             StartCoroutine(coroutine());
-            damage = true;
+            transform.position = new Vector2(39.3f, 3f);
         }
+
+        if (collision.gameObject.CompareTag("Slime"))
+        {
+            StartCoroutine(coroutine());
+        }
+
+        if (collision.gameObject.CompareTag("ResetPos"))
+        {
+            StartCoroutine(coroutine());
+            transform.position = new Vector2(67.5f, 1.3f);
+        }
+
     }
     IEnumerator coroutine()
     {
             damage = true;
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(5);
             damage = false;
     }
 }
