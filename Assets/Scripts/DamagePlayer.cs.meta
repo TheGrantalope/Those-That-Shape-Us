@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Scripts/DamagePlayer.cs.meta
 guid: f081966b7eac69640b0f2a395f074540
-========
-guid: 045d4adcff278574fbde89ce5c82cf6e
->>>>>>>> a2ba2316e78c1bbb3f95575c869a88e9153fad8c:Assets/Scripts/FindClosestSlime.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
