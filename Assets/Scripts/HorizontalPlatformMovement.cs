@@ -9,6 +9,7 @@ public class HorizontalPlatformMovement : MonoBehaviour
     [SerializeField] private float leftBoundary;
     [SerializeField] private float rightBoundary;
     private bool change = true;
+    private bool touchPlayer;
 
 
     // Start is called before the first frame update
@@ -36,7 +37,8 @@ public class HorizontalPlatformMovement : MonoBehaviour
         {
             transform.Translate(Vector3.right * Time.deltaTime * -speed);
         }
-
+        if (touchPlayer == true)
+            change = true;
     }
 
     bool Switch(bool change)
@@ -51,5 +53,13 @@ public class HorizontalPlatformMovement : MonoBehaviour
         }
 
         return change;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            touchPlayer = true;
+        }
     }
 }

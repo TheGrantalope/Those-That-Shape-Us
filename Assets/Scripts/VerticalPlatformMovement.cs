@@ -10,7 +10,7 @@ public class VerticalPlatformMovement : MonoBehaviour
     [SerializeField] private float upperBoundary;
     [SerializeField] private float lowerBoundary;
     private bool change = true;
-
+    private bool touchPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,8 @@ public class VerticalPlatformMovement : MonoBehaviour
         {
             transform.Translate(Vector3.up * Time.deltaTime * -speed);
         }
-
+        if (touchPlayer == true)
+            Switch(change);
     }
 
     bool Switch(bool change)
@@ -52,4 +53,11 @@ public class VerticalPlatformMovement : MonoBehaviour
         return change;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            touchPlayer = true;
+        }
+    }
 }

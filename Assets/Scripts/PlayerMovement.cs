@@ -4,45 +4,139 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 5.0f;
-    [SerializeField] private float jumpPower = 5.0f;
+    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float jumpingPower = 10.0f;
+    private bool isFacingRight;
     private bool isGrounded;
+    private bool damage;
+    private float horizontal;
 
-    private Rigidbody2D _playerRigidbody;
+    private bool canDash = true;
+    private bool isDashing;
+    [SerializeField] private float dashingPower = 5f;
+    private float dashingTime = 0.2f;
+    private float dashingCooldown = 1f;
+
+    public SpriteRenderer spriteRenderer;
+    public Sprite sprite1;
+    public Sprite sprite2;
+    public Sprite sprite3;
+
+    [SerializeField] private float fallGravityScale = 3;
+    [SerializeField] private float gravityScale = 3;
+
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] TrailRenderer tr;
+    [SerializeField] private Rigidbody2D rb;
+    
     private void Start()
     {
-        _playerRigidbody = GetComponent<Rigidbody2D>();
-        if (_playerRigidbody == null)
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
         {
             Debug.LogError("Player is missing a Rigidbody2D component");
         }
     }
     private void Update()
     {
-        MovePlayer();
+        horizontal = Input.GetAxisRaw("Horizontal");
+        
+        //MovePlayer();
+        if (isDashing)
+        {
+            return;
+        }
+    
+        if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            //rb.gravityScale = gravityScale;
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            //jumping = true;
+        }
 
-        if (Input.GetButton("Jump") && isGrounded)
-            Jump();
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+
+        Flip();
+
+        if (damage)
+        {
+            spriteRenderer.sprite = sprite1;
+            
+        }
     }
+    private void FixedUpdate()
+    {
+        if (isDashing)
+        {
+            return;
+        }
 
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
     private void MovePlayer()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
-        _playerRigidbody.velocity = new Vector2(horizontalInput * playerSpeed, _playerRigidbody.velocity.y);
+        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
     }
+    
 
-    private void Jump()
+    private void ReplaceSprite()
     {
-        _playerRigidbody.velocity = new Vector2(0, jumpPower);
-        isGrounded = false;
+        spriteRenderer.sprite = sprite1;
+        
     }
-
-    void OnCollisionEnter2D(Collision2D collision)
+    private bool IsGrounded()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+    private void Flip()
+    {
+        if (isFacingRight && horizontal > 0f || !isFacingRight && horizontal < 0f)
         {
-            isGrounded = true;
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
         }
     }
 
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Damaging"))
+        {
+            StartCoroutine(coroutine());
+            damage = true;
+        }
+    }
+    IEnumerator coroutine()
+    {
+            damage = true;
+            yield return new WaitForSeconds(3);
+            damage = false;
+    }
 }
+ 
