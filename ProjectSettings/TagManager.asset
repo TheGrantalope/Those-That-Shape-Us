@@ -5,8 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+<<<<<<< HEAD
   - Damaging
   - ResetPos
+=======
+  - Slime
+>>>>>>> a2ba2316e78c1bbb3f95575c869a88e9153fad8c
   layers:
   - Default
   - TransparentFX
