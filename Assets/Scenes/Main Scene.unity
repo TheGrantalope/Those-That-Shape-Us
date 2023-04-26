@@ -4051,9 +4051,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 78767730b8c6f3c46ad2e8d2b6a401ae, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4149,6 +4149,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6b845e88e63914380e5c3c28588b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleClip:
+  - {fileID: 8300000, guid: a4db85d3209331e4092b7e8ce8754725, type: 3}
+  - {fileID: 8300000, guid: dbb141de8bd2c5847ad290f2cabdbb62, type: 3}
+  battleClip: {fileID: 8300000, guid: 695984b0d920b874a8e39c6045b76618, type: 3}
+  player: {fileID: 641729927}
 --- !u!114 &1101443511
 MonoBehaviour:
   m_ObjectHideFlags: 0

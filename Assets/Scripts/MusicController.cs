@@ -8,28 +8,40 @@ public class MusicController : MonoBehaviour
     public AudioClip[] idleClip;
     public AudioClip battleClip;
     private AudioSource music;
-    private float[] delayRange = { 45.0f, 46.0f };
+    private float[] delayRange = { 45.0f, 180.0f };
+    private float delay;
 
     // Fade Management
     private float threshold;
     private float minVolume = 0;
     private float maxVolume = 0.75f;
     private float timeDuration = 5.0f;
+    private float adjustedDuration;
     private float timeElapsed = 0.0f;
     private float clipOffset = 5.0f;
     private bool fade;
 
+    // Battle Music Management
+    private float distanceThreshold = 25.0f;
+    private float distance;
+    public GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
+        // Camera Audio Source
         music = GetComponent<AudioSource>();
-        float delay = Random.Range(delayRange[0], delayRange[1]);
-        InvokeRepeating("IdleMusic", delay, delayRange[0]);
+
+        // Idle Music
+        delay = Random.Range(delayRange[0] / 3, delayRange[0]);
+        float rate = Random.Range(delayRange[0] * 2, delayRange[1]);
+        InvokeRepeating("IdleMusic", delay, rate);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Fade Conditions
         if (fade)
         {
             FadeIn();
@@ -39,25 +51,29 @@ public class MusicController : MonoBehaviour
             FadeOut();
         }
 
-        if (gameObject.GetComponent<FindClosestSlime>().FindClosestEnemy() != null)
+        // Battle Music Conditions
+        if (FindEnemyInRange())
         {
             if (music.clip != battleClip)
             {
                 BattleMusic();
             }
-        } else
-        {
-            music.loop = false;
-            FadeOut();
         }
-        
+        else
+        {
+            if (music.isPlaying && music.clip == battleClip)
+            {
+                FadeOut();
+            }
+        }
+    
     }
 
     void FadeIn()
     {
         if (music.isPlaying)
         {
-            music.volume = Mathf.Lerp(minVolume, maxVolume, timeElapsed / timeDuration);
+            music.volume = Mathf.Lerp(minVolume, maxVolume, timeElapsed / adjustedDuration);
             timeElapsed += Time.deltaTime;
         }
         if (music.volume == maxVolume)
@@ -71,7 +87,7 @@ public class MusicController : MonoBehaviour
     {
         if (music.isPlaying)
         {
-            music.volume = Mathf.Lerp(maxVolume, minVolume, timeElapsed / timeDuration);
+            music.volume = Mathf.Lerp(maxVolume, minVolume, timeElapsed / adjustedDuration);
             timeElapsed += Time.deltaTime;
         }
         if (music.volume == minVolume)
@@ -80,6 +96,7 @@ public class MusicController : MonoBehaviour
             if (!music.loop)
             {
                 music.Stop();
+                music.clip = null;
             }
             fade = true;
         }
@@ -90,10 +107,11 @@ public class MusicController : MonoBehaviour
         if (!music.isPlaying)
         {
             fade = true;
-            float delay = Random.Range(delayRange[0], delayRange[1]);
             music.clip = idleClip[Random.Range(0, idleClip.Length)];
             threshold = music.clip.length - clipOffset;
-            music.Play();
+            delay = Random.Range(delayRange[0] / 3, delayRange[0]);
+            adjustedDuration = timeDuration + delay;
+            music.PlayDelayed(delay);
         }
     }
 
@@ -108,9 +126,30 @@ public class MusicController : MonoBehaviour
             fade = true;
             music.clip = battleClip;
             threshold = music.clip.length - clipOffset;
-            music.loop = true;
+            adjustedDuration = timeDuration;
             music.Play();
         }
+    }
+
+    bool FindEnemyInRange()
+    {
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Damaging");
+        bool inRange = false;
+        float distance = Mathf.Infinity;
+        Vector3 position = player.transform.position;
+        foreach (GameObject go in gos)
+        {
+            if (go != GameObject.Find("Tilemap-Damage"))
+            {
+                float diff = Mathf.Abs(go.transform.position.x - position.x);
+                if (diff < distanceThreshold)
+                {
+                    inRange = true;
+                }
+            }
+        }
+        return inRange;
     }
 
 }
