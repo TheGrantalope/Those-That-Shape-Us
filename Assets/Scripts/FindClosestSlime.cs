@@ -7,7 +7,7 @@ public class FindClosestSlime : MonoBehaviour
     public GameObject FindClosestEnemy()
     {
         GameObject[] gos;
-        gos = GameObject.FindGameObjectsWithTag("Slime");
+        gos = GameObject.FindGameObjectsWithTag("Damaging");
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;

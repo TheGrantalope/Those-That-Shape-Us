@@ -39,7 +39,7 @@ public class MusicController : MonoBehaviour
             FadeOut();
         }
 
-        /*if (gameObject.GetComponent<FindClosestSlime>().FindClosestEnemy() != null)
+        if (gameObject.GetComponent<FindClosestSlime>().FindClosestEnemy() != null)
         {
             if (music.clip != battleClip)
             {
@@ -50,7 +50,7 @@ public class MusicController : MonoBehaviour
             music.loop = false;
             FadeOut();
         }
-        */
+        
     }
 
     void FadeIn()
@@ -77,12 +77,14 @@ public class MusicController : MonoBehaviour
         if (music.volume == minVolume)
         {
             timeElapsed = 0.0f;
-            music.Stop();
+            if (!music.loop)
+            {
+                music.Stop();
+            }
             fade = true;
         }
     }
 
-    // IdleMusic is called in InvokeRepeating 
     void IdleMusic()
     {
         if (!music.isPlaying)
@@ -103,6 +105,7 @@ public class MusicController : MonoBehaviour
         }
         else
         {
+            fade = true;
             music.clip = battleClip;
             threshold = music.clip.length - clipOffset;
             music.loop = true;
